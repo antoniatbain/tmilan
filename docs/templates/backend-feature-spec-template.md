@@ -142,3 +142,30 @@ output, and error handling.
       `tests/e2e/<feature_name>/...`.
 - [ ] CLAUDE.md/rules updates from §4 are included in the same change.
 - [ ] No secrets committed; no direct calls to real external services from any test.
+
+## 7. Definition of Done
+
+Before declaring the feature done, review your own output against these four checks. They
+are subjective/qualitative gates on top of the objective §6 checklist — §6 tells you *what*
+must be true, this tells you whether the result actually *feels right* for a production
+backend feature.
+
+- [ ] **Relevant** — every file touched (router, service, models, prompts, tests,
+      CLAUDE.md) maps directly to a requirement in §2 or a step in §3. No unrelated
+      refactors, no files touched outside declared scope, nothing added that isn't traceable
+      back to a stated requirement or a flagged, non-blocking assumption.
+- [ ] **Sensible** — the design choices (endpoint shape, DB schema, transaction
+      boundaries, prompt structure, which tools the LLM agent is given) are ones an
+      engineer fluent in FastAPI + SQLAlchemy/Postgres + the Claude Agent SDK would
+      recognize as idiomatic for this stack, not a bespoke pattern invented for this one
+      feature. Any deviation from an existing repo convention is called out and justified
+      in "Assumptions Made", not introduced silently.
+- [ ] **Effective** — the feature actually solves the problem in §1 end-to-end, not just
+      in isolated unit tests: a human can exercise the golden path described in §3 (call
+      the endpoint → see the DB state change → see the LLM-informed result in the
+      response) and confirm it behaves as intended, including the primary failure modes
+      named in §3/§5 (bad input, LLM timeout, DB conflict).
+- [ ] **Complete** — every checkbox in §6 is checked, every blocking row in the §2 Open
+      Questions table is resolved (not just flagged), and the CLAUDE.md/rules updates from
+      §4 describe the feature accurately enough that another engineer (or agent) could
+      extend it without re-reading the full diff.
